@@ -778,6 +778,23 @@ bash -n scripts/install.sh
 
 ---
 
+## Python 实现
+
+[`python/`](python/) 目录是一套 **Python（Chromium + DrissionPage + turnstilePatch）** 实现的同款「注册 → SSO → CPA」流水线，与上面的 Go CLI 相互独立（自成 pyproject / 配置 / 账本），按需选用：
+
+```bash
+cd python
+powershell -ExecutionPolicy Bypass -File setup.ps1   # Windows；macOS / Linux 用 bash setup.sh
+# 把 config.json 的 proxy 改成你的代理端口，然后：
+uv run python -u register_cli.py --extra 1 --threads 1    # 冒烟测试
+```
+
+- 协议优先 CPA mint（SSO → 纯 HTTP Device Flow，失败回退有头浏览器），详见 `python/README.md`
+- 存量号批量补 CPA / SSO 存活扫描 / token 验证：`python/scripts/`
+- 一键环境脚本（自动装 uv + Python 3.13 + 依赖，生成预填配置）：`python/setup.ps1` / `python/setup.sh`
+
+---
+
 ## License
 
 MIT（与上游 grok-free-register 思路一致；本仓库为 Go 重制版。）
